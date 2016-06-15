@@ -4,13 +4,14 @@ defmodule Novel.Milestone do
   schema "milestones" do
     field :name, :string
     field :description, :string
+    field :position, :integer
     has_many :site_milestones, Novel.SiteMilestone
     has_many :sub_milestones, Novel.SubMilestone
 
     timestamps
   end
 
-  @required_fields ~w(name)
+  @required_fields ~w(name position)
   @optional_fields ~w(description)
 
   @doc """

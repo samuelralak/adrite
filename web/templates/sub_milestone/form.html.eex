@@ -22,6 +22,12 @@
     <%= select f, :milestone_id, @milestones, prompt: '-- select milestone --', class: "form-control" %>
     <%= error_tag f, :description %>
   </div>
+  
+  <div class="form-group">
+    <%= label f, :position, class: "control-label" %>
+    <%= text_input f, :position, class: "form-control" %>
+    <%= error_tag f, :position %>
+  </div>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

@@ -16,7 +16,7 @@ defmodule Novel.User do
     timestamps
   end
 
-  @required_fields ~w(name email password password_confirmation)
+  @required_fields ~w(name email password confirm_password)
   @optional_fields ~w()
 
   @doc """
