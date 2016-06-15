@@ -1,0 +1,6 @@
+<h2>Edit labour</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: labour_path(@conn, :update, @labour) %>
+
+<%= link "Back", to: labour_path(@conn, :index) %>

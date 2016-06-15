@@ -1,0 +1,23 @@
+<h2>Show sub milestone</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @sub_milestone.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @sub_milestone.description %>
+  </li>
+
+  <li>
+    <strong>Milestone:</strong>
+    <%= @sub_milestone.milestone_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: sub_milestone_path(@conn, :edit, @sub_milestone) %>
+<%= link "Back", to: sub_milestone_path(@conn, :index) %>

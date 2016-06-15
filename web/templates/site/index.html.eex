@@ -1,0 +1,58 @@
+<%= link "New site", to: site_path(@conn, :new), class: "btn btn-primary btn-sm pull-right" %>
+<h3><strong>Sites</strong></h3>
+<hr />
+<%= for chunked <- Enum.chunk(@sites, 2, 2, []) do %>
+	<div class="row">
+		<%= for site <- chunked do %>
+			<div class="col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="pull-right">
+							<%= link "Show", to: site_path(@conn, :show, site), class: "btn btn-default btn-xs" %>
+        			<%= link "Edit", to: site_path(@conn, :edit, site), class: "btn btn-default btn-xs" %>
+        			<%= link "Delete", to: site_path(@conn, :delete, site), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+						</div>
+						<strong><%= site.name %></strong>
+						<hr />
+						<div class="row">
+							<div class="col-sm-6">
+								<strong>Location</strong>
+							</div>
+							<div class="col-sm-6">
+								<%= site.location %>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-sm-6">
+								<strong>Agreed Amount</strong>
+							</div>
+							<div class="col-sm-6">
+								Kes. <%= Number.Delimit.number_to_delimited(site.agreed_amount) %>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-sm-6">
+								<strong>Square Meters</strong>
+							</div>
+							<div class="col-sm-6">
+								<%= Number.Delimit.number_to_delimited(site.total_square_meters) %>m<sup>2</sup>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-sm-6">
+								<strong>Date Added</strong>
+							</div>
+							<div class="col-sm-6">
+								<%= format_date(site.inserted_at, "%B %e, %Y") %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+<% end %>
+

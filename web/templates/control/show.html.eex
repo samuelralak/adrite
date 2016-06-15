@@ -1,0 +1,18 @@
+<h2>Show control</h2>
+
+<ul>
+
+  <li>
+    <strong>Site sub milestone:</strong>
+    <%= @control.site_sub_milestone_id %>
+  </li>
+
+  <li>
+    <strong>Total cost:</strong>
+    <%= @control.total_cost %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: site_sub_milestone_control_path(@conn, :edit, @site_sub_milestone, @control) %>
+<%= link "Back", to: site_sub_milestone_control_path(@conn, :index, @site_sub_milestone) %>

@@ -1,0 +1,5 @@
+<h3><strong>Change settings</strong></h3>
+<hr />
+
+<%= render "form.html", changeset: @changeset,
+                        action: user_path(@conn, :update) %>

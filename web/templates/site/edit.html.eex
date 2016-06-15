@@ -1,0 +1,6 @@
+<%= link "Back", to: site_path(@conn, :index), class: "btn btn-default btn-sm pull-right" %>
+<h3><strong>Edit site</strong></h3>
+<hr />
+
+<%= render "form.html", changeset: @changeset,
+                        action: site_path(@conn, :update, @site) %>

@@ -1,0 +1,30 @@
+<h2>Listing material controls</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Material</th>
+      <th>Amount</th>
+      <th>Total cost</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for material_controls <- @material_controls do %>
+    <tr>
+      <td><%= material_controls.material_id %></td>
+      <td><%= material_controls.amount %></td>
+      <td><%= material_controls.total_cost %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: site_sub_milestone_material_control_path(@conn, :show, @site_sub_milestone, material_controls), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: site_sub_milestone_material_control_path(@conn, :edit, @site_sub_milestone, material_controls), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: site_sub_milestone_material_control_path(@conn, :delete, @site_sub_milestone, material_controls), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New material controls", to: site_sub_milestone_material_control_path(@conn, :new, @site_sub_milestone) %>

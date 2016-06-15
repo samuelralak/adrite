@@ -1,0 +1,6 @@
+<h2>New control</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: site_sub_milestone_control_path(@conn, :create, @site_sub_milestone) %>
+
+<%= link "Back", to: site_sub_milestone_control_path(@conn, :index, @site_sub_milestone) %>

@@ -1,0 +1,23 @@
+<h2>Show material controls</h2>
+
+<ul>
+
+  <li>
+    <strong>Material:</strong>
+    <%= @material_controls.material_id %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @material_controls.amount %>
+  </li>
+
+  <li>
+    <strong>Total cost:</strong>
+    <%= @material_controls.total_cost %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: site_sub_milestone_material_control_path(@conn, :edit, @site_sub_milestone, @material_controls) %>
+<%= link "Back", to: site_sub_milestone_material_control_path(@conn, :index, @site_sub_milestone) %>

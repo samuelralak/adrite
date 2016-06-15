@@ -1,0 +1,28 @@
+<h2>Listing labours</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Cost</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for labour <- @labours do %>
+    <tr>
+      <td><%= labour.name %></td>
+      <td><%= labour.cost %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: labour_path(@conn, :show, labour), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: labour_path(@conn, :edit, labour), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: labour_path(@conn, :delete, labour), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New labour", to: labour_path(@conn, :new) %>

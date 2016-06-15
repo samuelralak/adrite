@@ -1,0 +1,24 @@
+<h2>Show labour controls</h2>
+
+<ul>
+
+  <li>
+    <strong>Labour:</strong>
+    <%= @labour_controls.labour_id %>
+  </li>
+
+  <li>
+    <strong>No of days:</strong>
+    <%= @labour_controls.no_of_days %>
+  </li>
+
+  <li>
+    <strong>Total cost:</strong>
+    <%= @labour_controls.total_cost %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: site_sub_milestone_labour_control_path(@conn, :edit, @site_sub_milestone, @labour_controls) %>
+
+<%= link "Back", to: site_sub_milestone_labour_control_path(@conn, :index, @site_sub_milestone) %>

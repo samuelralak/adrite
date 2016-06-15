@@ -1,0 +1,18 @@
+<h2>Show labour</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @labour.name %>
+  </li>
+
+  <li>
+    <strong>Cost:</strong>
+    <%= @labour.cost %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: labour_path(@conn, :edit, @labour) %>
+<%= link "Back", to: labour_path(@conn, :index) %>

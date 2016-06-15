@@ -1,0 +1,6 @@
+<h2>New site sub milestone</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: site_sub_milestone_path(@conn, :create) %>
+
+<%= link "Back", to: site_sub_milestone_path(@conn, :index) %>

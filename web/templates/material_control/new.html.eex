@@ -1,0 +1,10 @@
+<h3>
+	<strong>New material control for <%= @site_sub_milestone.sub_milestone.name %></strong><br />
+	<small><strong>site: </strong><%= @site_sub_milestone.site.name %></small>
+</h3>
+<hr />
+
+<%= render "form.html", materials: @materials, changeset: @changeset,
+                        action: site_sub_milestone_material_control_path(@conn, :create, @site_sub_milestone) %>
+
+<%#= link "Back", to: site_sub_milestone_material_control_path(@conn, :index, @site_sub_milestone) %>

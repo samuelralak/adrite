@@ -1,0 +1,18 @@
+<h2>Show milestone</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @milestone.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @milestone.description %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: milestone_path(@conn, :edit, @milestone) %>
+<%= link "Back", to: milestone_path(@conn, :index) %>

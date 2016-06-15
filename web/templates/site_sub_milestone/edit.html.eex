@@ -1,0 +1,9 @@
+<%= link "Back", to: site_milestone_path(@conn, :show, @site_sub_milestone.site_milestone), class: "btn btn-default btn-sm pull-right" %>
+<h3>
+	<strong>Edit site sub milestone</strong><br />
+	<small><%= @site_sub_milestone.site.name %> - <strong><%= @site_sub_milestone.sub_milestone.name %></strong></small>
+</h3>
+<hr />
+
+<%= render "form.html", changeset: @changeset,
+                        action: site_sub_milestone_path(@conn, :update, @site_sub_milestone) %>

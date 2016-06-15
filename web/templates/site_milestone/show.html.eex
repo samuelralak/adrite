@@ -1,0 +1,102 @@
+<div class="pull-right">
+	<%= link "Edit", to: site_milestone_path(@conn, :edit, @site_milestone), class: "btn btn-info btn-xs" %>
+	<%= link "Back", to: site_path(@conn, :show, @site_milestone.site), class: "btn btn-default btn-xs" %>
+</div>
+<h3>
+	<strong><%= @site_milestone.milestone.name %> milestone</strong>
+	<br />
+	<small>
+		<strong>site</strong>: <%= @site_milestone.site.name %>
+	</small>
+</h3>
+<hr />
+<div class="row">
+	<div class="col-sm-12">
+		<div class="progress" style="margin-bottom: 0 !important;">
+			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: <%= @site_milestone.progress %>%;">
+		  	<span><%= @site_milestone.progress %>% Complete</span>
+			</div>
+		</div>
+		<ul class="list-inline">
+			<li>
+  			<p class="text-muted">
+  				<strong>start date: </strong> <%= @site_milestone.start_date %>
+  			</p>
+  		</li>
+  		<li>
+  			<p class="text-muted">
+  				<strong>end date: </strong> <%= @site_milestone.end_date %>
+  			</p>
+  		</li>
+  		<li>
+  			<p class="text-muted">
+  				<strong>total cost: </strong> <%= Number.Delimit.number_to_delimited @site_milestone.total_cost %>
+  			</p>
+  		</li>
+  		
+  		<li>
+  			<p class="text-muted">
+  				<strong> estimated budget: </strong> <%= Number.Delimit.number_to_delimited @site_milestone.estimated_budget %>
+  			</p>
+  		</li>
+  	</ul>
+	</div>
+</div>
+
+<h4><strong> Sub Milestones </strong></h4>
+<hr />
+<%= for site_sub_milestone <- @site_milestone.site_sub_milestones do %>
+	<div style="<%= add_style(site_sub_milestone.estimated_budget ,get_total_cost(site_sub_milestone))%>" class="<%= change_style(site_sub_milestone.estimated_budget, get_total_cost(site_sub_milestone))%>">
+  	<div class="panel-body">  	
+  		<div class="row">
+  			<div class="col-sm-12">
+  				<div class="pull-right">
+  					<small>
+							<%= link "Controls", to: site_sub_milestone_control_path(@conn, :index, site_sub_milestone) %>
+							<%#= link "Controls", to: "#", data: [toggle: "modal", target: "#myModal"] %>
+							<%#= link "Edit", to: "#", class: "editSubMilestone", data: [milestone: Poison.encode!(remove_unloaded(site_sub_milestone)) ] %>
+							<%= if !site_sub_milestone.is_completed do %>
+								<%= link "Edit", to: site_sub_milestone_path(@conn, :edit, site_sub_milestone) %>
+								<%= link "Close", to: "#", class: "closeSubMilestone", data: [id: site_sub_milestone.id], style: "color: maroon;" %>
+							<% end %>
+						</small>
+					</div>
+  				<strong><%= get_sub_milestone(site_sub_milestone).name %></strong>
+  						<%= if site_sub_milestone.is_completed do %>
+  							<span class="label label-default">CLOSED</span> 
+  						<% end %>
+  					<br />
+  				<small class="text-muted">
+  					<%= get_sub_milestone(site_sub_milestone).description %>
+  				</small>
+  				<hr style="margin-top: 5px !important; margin-bottom: 5px !important;"/>
+  				<ul class="list-inline" style="margin-top: 0 !important; margin-bottom: 0 !important;">
+  					<li>
+  						<small>
+  							<strong>total cost:</strong> Kes.<%= get_total_cost site_sub_milestone %>
+  						</small>
+  					</li>
+  					<li>
+  						<small>
+  							<strong>estimated budget:</strong> Kes.<%= Number.Delimit.number_to_delimited site_sub_milestone.estimated_budget %>
+  						</small>
+  					</li>
+  					<li>
+  						<small>
+  							<strong>square metres:</strong> <%= @site_milestone.square_meters %>m<sup>2</sup>
+  						</small>
+  					</li>
+  					<li>
+  						<small>
+  							<strong>due date:</strong> <%= format_date(site_sub_milestone.end_date, "%B %e, %Y") %> 
+  						</small>
+  					</li>
+  				</ul>
+  			</div>
+  		</div>
+  	</div>
+	</div>
+<% end %>
+<%= render "edit_sub_milestone_modal.html" %>
+
+

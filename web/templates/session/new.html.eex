@@ -1,0 +1,12 @@
+<div class="row" style="margin-top: 100px">
+	<div class="col-sm-6 col-sm-offset-3">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h4><strong>Login</strong></h4>
+				<hr />
+				<%= render "form.html", changeset: @changeset, action: session_path(@conn, :create) %>
+			</div>
+		</div>
+	</div>
+</div>
+

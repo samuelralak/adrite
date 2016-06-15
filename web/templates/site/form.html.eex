@@ -1,0 +1,93 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<%= form_for @changeset, @action, fn f -> %>
+			<%= if @changeset.action do %>
+				<div class="alert alert-danger">
+				  <p>Oops, something went wrong! Please check the errors below.</p>
+				</div>
+			<% end %>
+
+			<div class="form-group">
+				<%= label f, :name, class: "control-label" %>
+				<%= text_input f, :name, class: "form-control" %>
+				<%= error_tag f, :name %>
+			</div>
+
+			<div class="form-group">
+				<%= label f, :location, class: "control-label" %>
+				<%= text_input f, :location, class: "form-control" %>
+				<%= error_tag f, :location %>
+			</div>
+			<legend>Measurements (<strong>m<sup>2</sup></strong>)</legend>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<%= label f, :internal_walls_measurement, class: "control-label" %>
+						<%= number_input f, :internal_walls_measurement, class: "form-control" %>
+						<%= error_tag f, :internal_walls_measurement %>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<%= label f, :ceilings_measurement, class: "control-label" %>
+						<%= number_input f, :ceilings_measurement, class: "form-control" %>
+						<%= error_tag f, :ceilings_measurement %>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<%= label f, :woodwork_measurement, class: "control-label" %>
+						<%= number_input f, :woodwork_measurement, class: "form-control" %>
+						<%= error_tag f, :woodwork_measurement %>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<%= label f, :metalwork_measurement, class: "control-label" %>
+						<%= number_input f, :metalwork_measurement, class: "form-control" %>
+						<%= error_tag f, :metalwork_measurement %>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<%= label f, :externalworks_measurement, class: "control-label" %>
+						<%= number_input f, :externalworks_measurement, class: "form-control" %>
+						<%= error_tag f, :externalworks_measurement %>
+					</div>
+				</div>
+				<div class="col-sm-4">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<%= label f, :total_square_meters, class: "control-label" %>
+				<%= number_input f, :total_square_meters, class: "form-control" %>
+				<%= error_tag f, :total_square_meters %>
+			</div>
+			<hr />
+			<div class="form-group">
+				<%= label f, :agreed_amount, class: "control-label" %>
+				<%= number_input f, :agreed_amount, step: "any", class: "form-control" %>
+				<%= error_tag f, :agreed_amount %>
+			</div>
+			
+			<div class="form-group">
+				<%= label f, :estimated_budget, class: "control-label" %>
+				<%= number_input f, :estimated_budget, step: "any", class: "form-control" %>
+				<%= error_tag f, :estimated_budget %>
+			</div>
+
+			<div class="form-group">
+				<%= label f, :description, class: "control-label" %>
+				<%= textarea f, :description, class: "form-control" %>
+				<%= error_tag f, :description %>
+			</div>
+
+			<div class="form-group">
+				<%= submit "Submit", class: "btn btn-primary" %>
+			</div>
+		<% end %>
+	</div>
+</div>

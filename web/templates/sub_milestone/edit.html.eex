@@ -1,0 +1,6 @@
+<h2>Edit sub milestone</h2>
+
+<%= render "form.html", milestones: @milestones, changeset: @changeset,
+                        action: sub_milestone_path(@conn, :update, @sub_milestone) %>
+
+<%= link "Back", to: sub_milestone_path(@conn, :index) %>

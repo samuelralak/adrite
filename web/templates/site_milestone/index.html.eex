@@ -1,0 +1,38 @@
+<h2>Listing site milestones</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Milestone</th>
+      <th>Site</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Notes</th>
+      <th>Total cost</th>
+      <th>Is completed</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for site_milestone <- @site_milestones do %>
+    <tr>
+      <td><%= site_milestone.milestone_id %></td>
+      <td><%= site_milestone.site_id %></td>
+      <td><%= site_milestone.start_date %></td>
+      <td><%= site_milestone.end_date %></td>
+      <td><%= site_milestone.notes %></td>
+      <td><%= site_milestone.total_cost %></td>
+      <td><%= site_milestone.is_completed %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: site_milestone_path(@conn, :show, site_milestone), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: site_milestone_path(@conn, :edit, site_milestone), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: site_milestone_path(@conn, :delete, site_milestone), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New site milestone", to: site_milestone_path(@conn, :new) %>

@@ -1,0 +1,30 @@
+<h2>Listing sub milestones</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Milestone</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for sub_milestone <- @sub_milestones do %>
+    <tr>
+      <td><%= sub_milestone.name %></td>
+      <td><%= sub_milestone.description %></td>
+      <td><%= sub_milestone.milestone_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: sub_milestone_path(@conn, :show, sub_milestone), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: sub_milestone_path(@conn, :edit, sub_milestone), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: sub_milestone_path(@conn, :delete, sub_milestone), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New sub milestone", to: sub_milestone_path(@conn, :new) %>

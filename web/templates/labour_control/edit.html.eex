@@ -1,0 +1,11 @@
+<%= link "Back", to: site_sub_milestone_control_path(@conn, :index, @site_sub_milestone), class: "btn btn-default btn-sm pull-right" %>
+<h3>
+	<strong>Editing labour control for <%= @site_sub_milestone.sub_milestone.name %></strong><br />
+	<small><strong>site: </strong><%= @site_sub_milestone.site.name %></small>
+</h3>
+<hr />
+
+<%= render "form.html", labours: @labours, changeset: @changeset,
+                        action: site_sub_milestone_labour_control_path(@conn, :update, @site_sub_milestone, @labour_controls) %>
+
+

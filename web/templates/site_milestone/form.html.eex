@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<%= form_for @changeset, @action, fn f -> %>
+			<%= if @changeset.action do %>
+				<div class="alert alert-danger">
+				  <p>Oops, something went wrong! Please check the errors below.</p>
+				</div>
+			<% end %>
+	
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<%= label f, :start_date, class: "control-label" %>
+						<%= text_input f, :start_date_string, value: display_date(@site_milestone.start_date), class: "form-control datetimepicker" %>
+						<%= error_tag f, :start_date %>
+					</div>
+				</div>
+		
+				<div class="col-sm-6">
+					<div class="form-group">
+						<%= label f, :end_date, class: "control-label" %>
+						<%= text_input f, :end_date_string, value: display_date(@site_milestone.end_date), class: "form-control datetimepicker" %>
+						<%= error_tag f, :end_date %>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<%= label f, :notes, class: "control-label" %>
+				<%= textarea f, :notes, class: "form-control" %>
+				<%= error_tag f, :notes %>
+			</div>
+
+			<div class="form-group">
+				<%= label f, :total_cost, class: "control-label" %>
+				<%= number_input f, :total_cost, step: "any", class: "form-control" %>
+				<%= error_tag f, :total_cost %>
+			</div>
+			
+			<div class="form-group">
+				<%= label f, :estimated_budget, class: "control-label" %>
+				<%= number_input f, :estimated_budget, step: "any", class: "form-control" %>
+				<%= error_tag f, :estimated_budget %>
+			</div>
+
+			<div class="form-group">
+				<%= submit "Submit", class: "btn btn-primary" %>
+			</div>
+		<% end %>
+	</div>
+</div>

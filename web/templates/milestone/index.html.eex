@@ -1,0 +1,28 @@
+<h2>Listing milestones</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for milestone <- @milestones do %>
+    <tr>
+      <td><%= milestone.name %></td>
+      <td><%= milestone.description %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: milestone_path(@conn, :show, milestone), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: milestone_path(@conn, :edit, milestone), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: milestone_path(@conn, :delete, milestone), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New milestone", to: milestone_path(@conn, :new) %>

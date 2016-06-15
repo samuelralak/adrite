@@ -1,0 +1,30 @@
+<h2>Listing labour controls</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Labour</th>
+      <th>No of days</th>
+      <th>Total cost</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for labour_controls <- @labour_controls do %>
+    <tr>
+      <td><%= labour_controls.labour_id %></td>
+      <td><%= labour_controls.no_of_days %></td>
+      <td><%= labour_controls.total_cost %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: site_sub_milestone_labour_control_path(@conn, :show, @site_sub_milestone, labour_controls), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: site_sub_milestone_labour_control_path(@conn, :edit, @site_sub_milestone, labour_controls), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: site_sub_milestone_labour_control_path(@conn, :delete, @site_sub_milestone, labour_controls), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New labour controls", to: site_sub_milestone_labour_control_path(@conn, :new, @site_sub_milestone) %>

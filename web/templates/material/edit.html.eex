@@ -1,0 +1,6 @@
+<h2>Edit material</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: material_path(@conn, :update, @material) %>
+
+<%= link "Back", to: material_path(@conn, :index) %>

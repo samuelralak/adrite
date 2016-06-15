@@ -1,0 +1,48 @@
+<h2>Show site sub milestone</h2>
+
+<ul>
+
+  <li>
+    <strong>Sub milestone:</strong>
+    <%= @site_sub_milestone.sub_milestone_id %>
+  </li>
+
+  <li>
+    <strong>Site:</strong>
+    <%= @site_sub_milestone.site_id %>
+  </li>
+
+  <li>
+    <strong>Site milestone:</strong>
+    <%= @site_sub_milestone.site_milestone_id %>
+  </li>
+
+  <li>
+    <strong>Start date:</strong>
+    <%= @site_sub_milestone.start_date %>
+  </li>
+
+  <li>
+    <strong>End date:</strong>
+    <%= @site_sub_milestone.end_date %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @site_sub_milestone.notes %>
+  </li>
+
+  <li>
+    <strong>Cost:</strong>
+    <%= @site_sub_milestone.cost %>
+  </li>
+
+  <li>
+    <strong>Is completed:</strong>
+    <%= @site_sub_milestone.is_completed %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: site_sub_milestone_path(@conn, :edit, @site_sub_milestone) %>
+<%= link "Back", to: site_sub_milestone_path(@conn, :index) %>

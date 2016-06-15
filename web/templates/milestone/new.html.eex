@@ -1,0 +1,6 @@
+<h2>New milestone</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: milestone_path(@conn, :create) %>
+
+<%= link "Back", to: milestone_path(@conn, :index) %>
