@@ -13,5 +13,5 @@
 alias Novel.Repo
 alias Novel.User
 
-admin_params = %{name: "admin", email: "admin@adrite.com", password: "12345678", password_confirmation: "12345678"}
+admin_params = %{name: "admin", email: "admin@adrite.com", password: "12345678", confirm_password: "12345678"}
 admin = User.create_changeset(%User{}, admin_params) |> Repo.insert!
