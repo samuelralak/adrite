@@ -14,10 +14,10 @@
 </h3>
 <hr />
 <%= for control <- @controls do %>
-	<div class="<%= if control.total_cost > @site_sub_milestone.estimated_budget, do: 'alert alert-danger' %>">
+	<div class="<%= if not is_nil(control.total_cost) && control.total_cost > @site_sub_milestone.estimated_budget, do: 'alert alert-danger' %>">
 		<h5><strong>Total Cost on Controls: </strong>kes.<%= Number.Delimit.number_to_delimited(control.total_cost) %><br />
 		</h5>
-		<%= if control.total_cost > @site_sub_milestone.estimated_budget do %>
+		<%= if not is_nil(control.total_cost) && control.total_cost > @site_sub_milestone.estimated_budget do %>
 			<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds estimated budget by <strong>kes.<%= if not is_nil(control.total_cost), do: Number.Delimit.number_to_delimited (control.total_cost - @site_sub_milestone.estimated_budget)%></strong></small>
 		<% end %>
 	</div>
