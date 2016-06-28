@@ -6,7 +6,9 @@
 				  <p>Oops, something went wrong! Please check the errors below.</p>
 				</div>
 			<% end %>
-			<%= hidden_input f, :control_id, step: "any", value: 1 %>
+			<%= if is_nil @changeset.model.control_id do %>
+				<%= hidden_input f, :control_id, step: "any", value: 1 %>
+			<% end %>
 			<div class="form-group">
 				<%= label f, :labour, class: "control-label" %>
 				<%= select f, :labour_id, @labours, prompt: '-- select labour type --', class: "form-control" %>
