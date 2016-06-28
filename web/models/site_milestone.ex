@@ -22,7 +22,7 @@ defmodule Novel.SiteMilestone do
   	field :end_date_string, :string, virtual: true
   end
 
-  @required_fields ~w(site_id milestone_id)
+  @required_fields ~w(site_id milestone_id square_meters)
   @optional_fields ~w(start_date_string end_date_string notes total_cost is_completed estimated_budget)
 
   @doc """

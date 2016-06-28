@@ -13,21 +13,24 @@ $(document).ready(function(){
 	$(".closeSubMilestone").on("click", function(event){
 		var clickElem = $(this)
 		var siteSubMilestoneId = clickElem.data('id');
+		var confirmClose = confirm("Are you sure?");
 		
-		$.ajax({
-			url: "/close/" + siteSubMilestoneId,
-			type: "GET",
-			dataType: "JSON",
-			success: function (data) {
-				var data = $.parseJSON(data);
-				var progressDiv = $(".progress").find(".progress-bar")
+		if (confirmClose) {
+			$.ajax({
+				url: "/close/" + siteSubMilestoneId,
+				type: "GET",
+				dataType: "JSON",
+				success: function (data) {
+					var data = $.parseJSON(data);
+					var progressDiv = $(".progress").find(".progress-bar")
 				
-				progressDiv.css("width", data.progress + "%");
-				progressDiv.html("<span>" + data.progress + "% Complete</span>");
-				clickElem.hide();
-				clickElem.prev().hide();
-			}
-		});
+					progressDiv.css("width", data.progress + "%");
+					progressDiv.html("<span>" + data.progress + "% Complete</span>");
+					clickElem.hide();
+					clickElem.prev().hide();
+				}
+			});
+		}
 	});
 	
 	$("#labour_control_labour_id").on("change", function(event){

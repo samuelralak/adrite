@@ -1,5 +1,8 @@
 defmodule Novel.Site do
   use Novel.Web, :model
+  use Ecto.Model
+  
+  after_delete :delete_null_assoc
 
   schema "sites" do
     field :name, :string
@@ -13,8 +16,8 @@ defmodule Novel.Site do
     field :woodwork_measurement, :decimal
     field :metalwork_measurement, :decimal
     field :externalworks_measurement, :decimal
-    has_many :site_sub_milestones, Novel.SiteSubMilestone, on_delete: :delete_all
-    has_many :site_milestones, Novel.SiteMilestone, on_delete: :delete_all
+    has_many :site_sub_milestones, Novel.SiteSubMilestone, on_delete: :nilify_all
+    has_many :site_milestones, Novel.SiteMilestone, on_delete: :nilify_all
 
     timestamps
   end
@@ -31,5 +34,29 @@ defmodule Novel.Site do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+  
+  def delete_null_assoc(site) do
+  	ssm_ids = Novel.Repo.all(from ssm in Novel.SiteSubMilestone, where: is_nil(ssm.site_id), select: ssm.id)
+  	
+  	# delete labour controls
+  	controls = from(c in Novel.LabourControl, where: c.site_sub_milestone_id in ^ssm_ids) 
+  	|> Novel.Repo.delete_all
+  			
+  	# delete material controls
+  	controls = from(c in Novel.MaterialControl, where: c.site_sub_milestone_id in ^ssm_ids) 
+  	|> Novel.Repo.delete_all
+  			
+  	# delete controls
+  	controls = from(c in Novel.Control, where: c.site_sub_milestone_id in ^ssm_ids) 
+  	|> Novel.Repo.delete_all
+  			
+  	site_sub_milestones = from(ssm in Novel.SiteSubMilestone, where: ssm.id in ^ssm_ids)
+  	|> Novel.Repo.delete_all
+  	
+  	query = from(sm in Novel.SiteMilestone, where: is_nil(sm.site_id))
+  	|> Novel.Repo.delete_all
+  	
+  	site
   end
 end

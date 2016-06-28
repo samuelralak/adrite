@@ -13,14 +13,14 @@ defmodule Novel.SiteSubMilestone do
     belongs_to :site, Novel.Site
     belongs_to :site_milestone, Novel.SiteMilestone
 		
-		has_many :labour_controls, Novel.LabourControl, on_delete: :delete_all
-		has_many :material_controls, Novel.MaterialControl, on_delete: :delete_all
-		has_many :controls, Novel.Control, on_delete: :delete_all
+		has_many :labour_controls, Novel.LabourControl, on_delete: :nilify_all
+		has_many :material_controls, Novel.MaterialControl, on_delete: :nilify_all
+		has_many :controls, Novel.Control, on_delete: :nilify_all
 		
     timestamps
   end
 
-  @required_fields ~w()
+  @required_fields ~w(site_id site_milestone_id sub_milestone_id)
   @optional_fields ~w(start_date end_date notes cost is_completed estimated_budget)
 
   @doc """

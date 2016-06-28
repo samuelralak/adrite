@@ -7,8 +7,8 @@ defmodule Novel.Control do
   schema "controls" do
     field :total_cost, :float
     belongs_to :site_sub_milestone, Novel.SiteSubMilestone
-    has_many :labour_controls, Novel.LabourControl
-    has_many :material_controls, Novel.MaterialControl
+    has_many :labour_controls, Novel.LabourControl, on_delete: :delete_all
+    has_many :material_controls, Novel.MaterialControl, on_delete: :delete_all
 
     timestamps
   end

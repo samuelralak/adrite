@@ -51,6 +51,7 @@ defmodule Novel.SiteController do
 
     case Repo.update(changeset) do
       {:ok, site} ->
+      	create_milestone(site)
         conn
         |> put_flash(:info, "Site updated successfully.")
         |> redirect(to: site_path(conn, :show, site))
@@ -74,20 +75,43 @@ defmodule Novel.SiteController do
   defp create_milestone(site) do
   	milestones = Repo.all(Milestone)
   	for milestone <- milestones do
-  		site_milestone = Repo.insert! %Novel.SiteMilestone{
-  			milestone_id: milestone.id, site_id: site.id,
+  		changes = %{ milestone_id: milestone.id, site_id: site.id, 
   			square_meters: milestone_measurement(milestone, site),
   			estimated_budget: assign_milestone_cost(milestone, site)
   		}
-  		sub_milestones = Repo.all(assoc(milestone, :sub_milestones))
-  		for sub_milestone <- sub_milestones do
-  			site_sub_milestone = Repo.insert! %Novel.SiteSubMilestone{
-  				site_id: site.id, site_milestone_id: site_milestone.id, 
-  				sub_milestone_id: sub_milestone.id, 
-  				estimated_budget: assign_submilestone_cost(milestone, site_milestone)
-  			}
+  		result = 
+				case Repo.get_by(Novel.SiteMilestone, 
+					%{ milestone_id: milestone.id, site_id: site.id }) do
+						nil -> %Novel.SiteMilestone{}
+						site_milestone -> site_milestone
+				end
+				|> Novel.SiteMilestone.changeset(changes)
+				|> Repo.insert_or_update
+  		
+  		
+  		case result do
+  			{:ok, site_milestone} ->
+  				sub_milestones = Repo.all(assoc(milestone, :sub_milestones))
+  				for sub_milestone <- sub_milestones do
+  					changes = %{site_id: site.id, site_milestone_id: site_milestone.id,
+  						sub_milestone_id: sub_milestone.id, estimated_budget: assign_submilestone_cost(
+  							milestone, site_milestone)
+  					}
+  					result = 
+  						case Repo.get_by(Novel.SiteSubMilestone, 
+  							%{ sub_milestone_id: sub_milestone.id, site_id: site.id }) do
+  								nil -> %Novel.SiteSubMilestone{}
+  								site_sub_milestone -> site_sub_milestone
+  						end
+  						|> Novel.SiteSubMilestone.changeset(changes)
+  						|> Repo.insert_or_update
+  				end 
+  			{:error, changeset} -> IO.inspect changeset
   		end
   	end
+  end
+  
+  defp update_milestone(site) do
   end
   
   defp milestone_measurement(milestone, site) do
