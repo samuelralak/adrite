@@ -19,7 +19,8 @@ defmodule Novel.Mixfile do
   def application do
     [mod: {Novel, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :joken]]
+                    :phoenix_ecto, :postgrex, :comeonin, :joken,
+                    :calendar, :calecto, :phoenix_calendar]]
   end
 
   # Specifies which paths to compile per environment.
@@ -43,7 +44,10 @@ defmodule Novel.Mixfile do
      {:timex, "~> 2.1.3"},
      {:comeonin, "~> 2.1"},
      {:joken, "~> 1.1"},
-     {:guardian, "~> 0.12.0"}]
+     {:guardian, "~> 0.12.0"},
+     {:phoenix_calendar, "~> 0.1.2"},
+     {:calecto, "~> 0.5.2"},
+     {:calendar, "~> 0.13"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

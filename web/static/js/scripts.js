@@ -35,17 +35,31 @@ $(document).ready(function(){
 	
 	$("#labour_control_labour_id").on("change", function(event){
 		var labourId = $(this).val();
-		var days = $("#labour_control_no_of_days").val();
+		var days = $("#labour_control_no_of_workers").val();
 		days = days === "" ? 1 : days;
 		
 		calculateLabourCost(labourId, days);
 	});
 	
-	$("#labour_control_no_of_days").on("change", function(event){
+	$("#labour_control_no_of_workers").on("change", function(event){
 		var days = $(this).val() === "" ? 1 : $(this).val();
 		var labourId = $("#labour_control_labour_id").val();
 		
 		calculateLabourCost(labourId, days);
+	});
+
+	$("#labour_control_specified_rate").on("change", function(event){
+		if ($(this).val() !== "") {
+			var totalCost = $(this).val() * $("#labour_control_no_of_workers").val();
+			$("#labour_control_total_cost").val(totalCost);
+		}
+	});
+
+	$("#material_control_specified_rate").on("change", function(event){
+		if ($(this).val() !== "") {
+			var totalCost = $(this).val() * $("#material_control_amount").val();
+			$("#material_control_total_cost").val(totalCost);
+		}
 	});
 	
 	function calculateLabourCost (labourId, days) {

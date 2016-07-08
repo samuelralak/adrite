@@ -1,0 +1,60 @@
+<div class="pull-right">
+	<%= link "Back", to: site_path(@conn, :show, @data.site_milestone.site), class: "btn btn-default" %>
+</div>
+<h3>
+	<strong><%= @data.site_milestone.milestone.name %> milestone</strong>
+	<br />
+	<small>
+		<strong>site</strong>: <%= @data.site_milestone.site.name %>
+	</small>
+</h3>
+<hr>
+<nav>
+  <ul class="pager">
+    <li class="previous">
+    	<%= link to: reports_path(@conn, :show, @data.site_milestone, year: @data.year, week_number: @data.week_number-1) do %>
+    		<span aria-hidden="true">&larr;</span> Previous
+    	<% end %>
+    </li>
+    <li>
+    	Week <%= @data.week_number %>. 
+    	<%= @data.current_date |> Calendar.Strftime.strftime! "%B"  %>, 
+    	<%= @data.current_date |> Calendar.Strftime.strftime! "%Y"  %>. </li>
+    <li class="next">
+    	<%= link to: reports_path(@conn, :show, @data.site_milestone, year: @data.year, week_number: @data.week_number+1) do %>
+    		Next <span aria-hidden="true">&rarr;</span>
+    	<% end %>
+    </li>
+  </ul>
+</nav>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th></th>
+			<%= for day <- @data.current_week do %>
+				<th><%= day |> Calendar.Strftime.strftime! "%a, %d"  %> </th>
+			<% end %>
+			<th>Total (Kshs)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><strong>Materials (Kshs)</strong></td>
+			<%= for day <- @data.current_week do %>
+				<td><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.material, day) |> Enum.at 0) %></td>
+			<% end %>
+			<td><%= Number.Delimit.number_to_delimited week_totals(@data.material, @data.labour).material_total %></td>
+		</tr>
+		<tr>
+			<td><strong>Labour (Kshs)</strong></td>
+			<%= for day <- @data.current_week do %>
+				<td><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.labour, day) |> Enum.at 0) %></td>
+			<% end %>
+			<td><%= Number.Delimit.number_to_delimited week_totals(@data.material, @data.labour).labour_total %></td>
+		</tr>
+		<tr>
+			<td colspan="8"><strong class="pull-right">Grand Total:</strong></td>
+			<td><%= Number.Delimit.number_to_delimited week_totals(@data.material, @data.labour).total %></td>
+		</tr>
+	</tbody>
+</table>

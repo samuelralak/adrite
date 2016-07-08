@@ -20,10 +20,19 @@
 		<%= if not is_nil(control.total_cost) && control.total_cost > @site_sub_milestone.estimated_budget do %>
 			<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds estimated budget by <strong>kes.<%= if not is_nil(control.total_cost), do: Number.Delimit.number_to_delimited (control.total_cost - @site_sub_milestone.estimated_budget)%></strong></small>
 		<% end %>
+		<div class="alert alert-warning">
+			<%= if not is_nil(control.total_cost) && control.total_cost >= (90/100 * @site_sub_milestone.estimated_budget) do %>
+			<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds 90% of estimated budget </small>
+		<% end %>	
+		</div>
+		
 	</div>
 	<%= if control.material_controls do %>
 		<div class="panel panel-default">
 			<div class="panel-heading">
+				<div class="pull-right">
+					<strong>Total: </strong>kes.<%= Number.Delimit.number_to_delimited total_on_material(control) %>
+				</div>
     		<h3 class="panel-title"><strong> Material Controls </strong></h3>
   		</div>
   		<div class="panel-body">
@@ -34,7 +43,7 @@
 				  		<th>Cost</th>
 				  		<th>Amount</th>
 				  		<th>Total Cost</th>
-				  		<th>Date Added</th>
+				  		<th>Date</th>
 				  		<th></th>
 						</tr>
 					</thead>
@@ -42,10 +51,16 @@
 						<%= for mc <- control.material_controls do %>
 							<tr>
 				  			<td><%= mc.material.name %></td>
-				  			<td><%= Float.to_string(mc.material.cost, [decimals: 2, compact: true]) %></td>
+				  			<td>
+				  				<%= if is_nil(mc.specified_rate) do %>
+				  					<%= Float.to_string(mc.material.cost, [decimals: 2, compact: true]) %></td>
+				  				<%= else %>
+				  					<%= Float.to_string(mc.specified_rate, [decimals: 2, compact: true]) %></td>
+				  				<% end %>
+				  			</td>
 				  			<td><%= mc.amount %></td>
 				  			<td><%= Float.to_string(mc.total_cost, [decimals: 2, compact: true]) %></td>
-				  			<td><%= mc.inserted_at %></td>
+				  			<td><%= mc.date %></td>
 				  			<td class="text-right">
 				  				<%= if !@site_sub_milestone.is_completed do %>
 										<%= link "Edit", to: site_sub_milestone_material_control_path(@conn, :edit, @site_sub_milestone, mc), class: "btn btn-default btn-xs" %>
@@ -62,6 +77,9 @@
 	<%= if control.labour_controls do %>
 		<div class="panel panel-default">
 			<div class="panel-heading">
+				<div class="pull-right">
+					<strong>Total: </strong>kes.<%= Number.Delimit.number_to_delimited total_on_labour(control) %>
+				</div>
     		<h3 class="panel-title"><strong> Labour Controls </strong></h3>
   		</div>
   		<div class="panel-body">
@@ -70,9 +88,9 @@
 						<tr>
 				  		<th>Labour</th>
 				  		<th>Cost</th>
-				  		<th>No. of Days</th>
+				  		<th>No. of Workers</th>
 				  		<th>Total Cost</th>
-				  		<th>Date Added</th>
+				  		<th>Date</th>
 				  		<th></th>
 						</tr>
 					</thead>
@@ -80,10 +98,15 @@
 						<%= for lc <- control.labour_controls do %>
 							<tr>
 				  			<td><%= lc.labour.name %></td>
-				  			<td><%= Float.to_string(lc.labour.cost, [decimals: 2, compact: true]) %></td>
-				  			<td><%= lc.no_of_days %></td>
+				  			<td>
+				  				<%= if is_nil(lc.specified_rate) do %>
+				  					<%= Float.to_string(lc.labour.cost, [decimals: 2, compact: true]) %></td>
+				  				<%= else %>
+				  					<%= Float.to_string(lc.specified_rate, [decimals: 2, compact: true]) %></td>
+				  				<% end %>
+				  			<td><%= lc.no_of_workers %></td>
 				  			<td><%= Float.to_string(lc.total_cost, [decimals: 2, compact: true]) %></td>
-				  			<td><%= lc.inserted_at %></td>
+				  			<td><%= lc.date %></td>
 				  			<td class="text-right">
 				  				<%= if !@site_sub_milestone.is_completed do %>
 										<%= link "Edit", to: site_sub_milestone_labour_control_path(@conn, :edit, @site_sub_milestone, lc), class: "btn btn-default btn-xs" %>

@@ -8,15 +8,20 @@ defmodule Novel.LabourControl do
   schema "labour_controls" do
     field :no_of_days, :integer
     field :total_cost, :float
+    field :specified_rate, :float
+    field :date, Ecto.Date
+    field :no_of_workers, :integer
     belongs_to :labour, Novel.Labour
     belongs_to :control, Novel.Control
     belongs_to :site_sub_milestone, Novel.SiteSubMilestone
 
     timestamps
+
+    field :date_string, :string, virtual: true
   end
 
-  @required_fields ~w(no_of_days total_cost labour_id)
-  @optional_fields ~w(control_id)
+  @required_fields ~w(date_string total_cost labour_id no_of_workers)
+  @optional_fields ~w(date control_id specified_rate)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -27,6 +32,7 @@ defmodule Novel.LabourControl do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> parse_date("date")
     |> assign_control
   end
   
@@ -58,6 +64,18 @@ defmodule Novel.LabourControl do
   defp default_for_nil(value) do
   	if is_nil(value), do: 0.0, else: value
   end
+
+  defp parse_date(changeset, field) do
+    if date = get_change(changeset, String.to_atom(field <> "_string")) do
+      date = String.split(date, "/")  
+      |> List.to_tuple
+      |> Ecto.Date.cast!
+      changeset
+      |> put_change(String.to_atom(field), date)
+    else
+      changeset
+    end
+  end
   
   def preload_associations(labour_control) do
     labour_control |> Novel.Repo.preload([
@@ -70,4 +88,6 @@ defmodule Novel.LabourControl do
   	Novel.Repo.update control
   	labour_control 
   end
+
+
 end

@@ -41,6 +41,7 @@ defmodule Novel.Router do
     end
     resources "/materials", MaterialController
     resources "/labours", LabourController
+    resources "/reports", ReportsController, only: [:show]
   end
 
   # Other scopes may use custom stacks.

@@ -73,7 +73,7 @@
   				<ul class="list-inline" style="margin-top: 0 !important; margin-bottom: 0 !important;">
   					<li>
   						<small>
-  							<strong>total cost:</strong> Kes.<%= get_total_cost site_sub_milestone %>
+  							<strong>total cost:</strong> Kes.<%= Number.Delimit.number_to_delimited get_total_cost(site_sub_milestone)  %>
   						</small>
   					</li>
   					<li>

@@ -10,6 +10,12 @@
 				<%= hidden_input f, :control_id, step: "any", value: 1 %>
 			<% end %>
 			<div class="form-group">
+				<%= label f, :date, class: "control-label" %>
+				<%= text_input f, :date_string, value: Novel.SiteMilestoneView.display_date(@changeset.model.date), class: "form-control datetimepicker" %>
+				<%= error_tag f, :date_string %>
+			</div>
+
+			<div class="form-group">
 				<%= label f, :material, class: "control-label" %>
 				<%= select f, :material_id, @materials, prompt: '-- select material type --', class: "form-control" %>
 				<%= error_tag f, :material_id %>
@@ -19,6 +25,13 @@
 				<%= label f, :amount, class: "control-label" %>
 				<%= number_input f, :amount, step: "any", class: "form-control" %>
 				<%= error_tag f, :amount %>
+			</div>
+
+			<div class="form-group">
+				<%= label f, "Do you wish to specify price?", class: "control-label" %>
+				<%= number_input f, :specified_rate, class: "form-control" %>
+				<%= error_tag f, :specified_rate %>
+				<small><i>leave blank if you don't wish to specify price</i></small>
 			</div>
 
 			<div class="form-group">

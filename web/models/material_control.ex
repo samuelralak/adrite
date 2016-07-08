@@ -8,15 +8,19 @@ defmodule Novel.MaterialControl do
   schema "material_controls" do
     field :amount, :float
     field :total_cost, :float
+    field :specified_rate, :float
+    field :date, Ecto.Date
     belongs_to :material, Novel.Material
     belongs_to :control, Novel.Control
     belongs_to :site_sub_milestone, Novel.SiteSubMilestone
 
     timestamps
+
+    field :date_string, :string, virtual: true
   end
 
-  @required_fields ~w(amount total_cost material_id)
-  @optional_fields ~w(control_id)
+  @required_fields ~w(date_string amount total_cost material_id amount)
+  @optional_fields ~w(date control_id specified_rate)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -27,6 +31,7 @@ defmodule Novel.MaterialControl do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> parse_date("date")
     |> assign_control
   end
   
@@ -57,6 +62,18 @@ defmodule Novel.MaterialControl do
   
   defp default_for_nil(value) do
   	if is_nil(value), do: 0.0, else: value
+  end
+
+  defp parse_date(changeset, field) do
+    if date = get_change(changeset, String.to_atom(field <> "_string")) do
+      date = String.split(date, "/")  
+      |> List.to_tuple
+      |> Ecto.Date.cast!
+      changeset
+      |> put_change(String.to_atom(field), date)
+    else
+      changeset
+    end
   end
   
   def preload_associations(material_control) do

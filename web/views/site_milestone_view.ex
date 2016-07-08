@@ -25,6 +25,14 @@ defmodule Novel.SiteMilestoneView do
   		Ecto.DateTime.to_string(date)
   	end 
   end
+
+  def display_date_time(date) do
+    if is_nil(date) do
+      ""
+    else
+      Ecto.Date.to_string(date)
+    end 
+  end
   
   def get_total_cost(site_sub_milestone) do
   	ssm_id = site_sub_milestone.id
@@ -37,6 +45,7 @@ defmodule Novel.SiteMilestoneView do
   def change_style(estimated_budget, total_cost) do
   	if not is_nil(total_cost) do
   		if total_cost > estimated_budget, do: 'panel panel-danger', else: 'panel panel-default'
+      if total_cost >= (90/100 * estimated_budget), do: 'panel panel-warning', else: 'panel panel-default'
   	else
   		'panel panel-default'
   	end
@@ -45,6 +54,7 @@ defmodule Novel.SiteMilestoneView do
   def add_style(estimated_budget, total_cost) do
   	if not is_nil(total_cost) do
   		if total_cost > estimated_budget, do: 'background-color: #f2dede; color: #a94442;'
+      if total_cost >= (90/100 * estimated_budget), do: 'background-color: #faebcc;'
   	end
   end
 end

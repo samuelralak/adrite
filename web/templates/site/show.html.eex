@@ -69,6 +69,12 @@
   							<small><%= link "Edit", to: site_milestone_path(@conn, :edit, site_milestone) %></small>
   						</p>
   					</li>
+
+            <li>
+              <p class="text-muted">
+                <small><%= link "Reports", to: reports_path(@conn, :show, site_milestone) %></small>
+              </p>
+            </li>
   					<li>
   						<p class="text-muted">
   							<small><%#= link "Delete", to: site_path(@conn, :edit, @site), style: "color: maroon" %></small>
