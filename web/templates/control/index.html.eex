@@ -20,11 +20,13 @@
 		<%= if not is_nil(control.total_cost) && control.total_cost > @site_sub_milestone.estimated_budget do %>
 			<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds estimated budget by <strong>kes.<%= if not is_nil(control.total_cost), do: Number.Delimit.number_to_delimited (control.total_cost - @site_sub_milestone.estimated_budget)%></strong></small>
 		<% end %>
-		<div class="alert alert-warning">
-			<%= if not is_nil(control.total_cost) && control.total_cost >= (90/100 * @site_sub_milestone.estimated_budget) do %>
-			<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds 90% of estimated budget </small>
+		
+		<%= if not is_nil(control.total_cost) && control.total_cost >= (90/100 * @site_sub_milestone.estimated_budget) do %>
+			<div class="alert alert-warning">
+				<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds 90% of estimated budget </small>
+			</div>
 		<% end %>	
-		</div>
+		
 		
 	</div>
 	<%= if control.material_controls do %>

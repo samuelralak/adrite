@@ -47,7 +47,7 @@ defmodule Novel.MaterialControl do
   			|> put_change(:control_id, control.id)
   		control ->
   			if total_cost = get_change(changeset, :total_cost) do
-  				old_cost = control.total_cost - default_for_nil(changeset.model.total_cost)
+  				old_cost = default_for_nil(control.total_cost) - default_for_nil(changeset.model.total_cost)
   				new_cost = default_for_nil(old_cost) + default_for_nil(total_cost)
   				control = Ecto.Changeset.change(control, total_cost: new_cost) 
   				Novel.Repo.update control
