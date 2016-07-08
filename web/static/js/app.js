@@ -20,7 +20,9 @@ import "phoenix_html"
 
 // import socket from "./socket"
 // import jquery from "./jquery"
-import jqueryui from "./jqueryui"
-import bootstrap from "./bootstrap"
-import scripts from "./scripts"
+import jqueryui 	from "./jqueryui"
+import bootstrap 	from "./bootstrap"
+import chart 			from "./chart"
+import scripts 		from "./scripts"
+import charts 		from "./charts"
 

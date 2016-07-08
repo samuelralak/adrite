@@ -1,7 +1,7 @@
 <div class="pull-right">
 	<%= link "Back", to: site_path(@conn, :show, @data.site_milestone.site), class: "btn btn-default" %>
 </div>
-<h3>
+<h4>
 	<strong><%= @data.site_milestone.milestone.name %> milestone</strong>
 	<br />
 	<small>
@@ -27,12 +27,13 @@
     </li>
   </ul>
 </nav>
+
 <table class="table table-striped">
 	<thead>
 		<tr>
 			<th></th>
 			<%= for day <- @data.current_week do %>
-				<th><%= day |> Calendar.Strftime.strftime! "%a, %d"  %> </th>
+				<th class="dayOfWeek"><%= day |> Calendar.Strftime.strftime! "%a, %d"  %> </th>
 			<% end %>
 			<th>Total (Kshs)</th>
 		</tr>
@@ -41,14 +42,14 @@
 		<tr>
 			<td><strong>Materials (Kshs)</strong></td>
 			<%= for day <- @data.current_week do %>
-				<td><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.material, day) |> Enum.at 0) %></td>
+				<td class="materialData"><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.material, day) |> Enum.at 0) %></td>
 			<% end %>
 			<td><%= Number.Delimit.number_to_delimited week_totals(@data.material, @data.labour).material_total %></td>
 		</tr>
 		<tr>
 			<td><strong>Labour (Kshs)</strong></td>
 			<%= for day <- @data.current_week do %>
-				<td><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.labour, day) |> Enum.at 0) %></td>
+				<td class="labourData"><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.labour, day) |> Enum.at 0) %></td>
 			<% end %>
 			<td><%= Number.Delimit.number_to_delimited week_totals(@data.material, @data.labour).labour_total %></td>
 		</tr>
@@ -58,3 +59,34 @@
 		</tr>
 	</tbody>
 </table>
+<hr>
+
+<div class="row">
+	<div class="col-sm-12 text-center">
+		<h4><strong>Daily total expenditure on Materials and Labour in Kshs.</strong></h4>		
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-5 control-label">Change graph: </label>
+				<div class="col-sm-7">
+					<select class="form-control input-sm changeGraphType">
+						<option selected="true" value="bar">Bar Graph</option>
+						<option value="line">Line Graph</option>
+					</select>			
+				</div>
+			</div>	
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12 graphArea">
+		<canvas id="myChart" width="400" height="200"></canvas>
+	</div>
+</div>
+
+<br><br><br>
