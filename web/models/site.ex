@@ -16,6 +16,7 @@ defmodule Novel.Site do
     field :woodwork_measurement, :decimal
     field :metalwork_measurement, :decimal
     field :externalworks_measurement, :decimal
+    has_many :site_measurements, Novel.SiteMeasurement
     has_many :site_sub_milestones, Novel.SiteSubMilestone, on_delete: :nilify_all
     has_many :site_milestones, Novel.SiteMilestone, on_delete: :nilify_all
 
@@ -34,6 +35,7 @@ defmodule Novel.Site do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:site_measurements, required: true)
   end
   
   def delete_null_assoc(site) do

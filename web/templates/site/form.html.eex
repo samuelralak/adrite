@@ -18,7 +18,35 @@
 				<%= text_input f, :location, class: "form-control" %>
 				<%= error_tag f, :location %>
 			</div>
-			<legend>Measurements (<strong>m<sup>2</sup></strong>)</legend>
+			<hr>
+			<div class="row">
+					<div class="col-sm-6">
+						<label class="control-label">Measurement</label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label">Square meters</label>
+					</div>
+					<div class="col-sm-3">
+						<label class="control-label">Price per m<sup>2</sup></label>
+					</div>
+				</div>
+			<%= inputs_for f, :site_measurements, fn i -> %>
+				<div class="row">
+					<div class="col-sm-6">
+						<%= select i, :measurement_id, @measurements, prompt: '-- select measurement --', class: "measurement-select form-control" %>
+						<%= error_tag f, :measurement_id %>
+					</div>
+					<div class="col-sm-3">
+						<%= number_input i, :square_metres, class: "square_metres form-control" %>
+						<%= error_tag f, :square_metres %>
+					</div>
+					<div class="col-sm-3">
+						<%= number_input i, :price_per_square_metre, class: "price_per_metre form-control" %>
+						<%= error_tag f, :price_per_square_metre %>
+					</div>
+				</div>
+				<br />
+			<% end %>
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group">

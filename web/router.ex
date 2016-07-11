@@ -27,6 +27,7 @@ defmodule Novel.Router do
     get "/close/:id", SiteSubMilestoneController, :close
     
     put "/user", UserController, :update
+    post "/sites/new", SiteController, :new
     post "/login", SessionController, :create
     delete "/logout", SessionController, :delete
     

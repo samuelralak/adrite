@@ -25,4 +25,5 @@ import bootstrap 	from "./bootstrap"
 import chart 			from "./chart"
 import scripts 		from "./scripts"
 import charts 		from "./charts"
+import sites 			from "./sites"
 

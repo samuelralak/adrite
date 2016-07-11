@@ -1,7 +1,7 @@
 defmodule Novel.SiteView do
   use Novel.Web, :view
   use Number
-  import Ecto
+  
   alias Novel.Repo
   alias Novel.Milestone
   

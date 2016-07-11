@@ -2,7 +2,7 @@
 <h3><strong>New site</strong></h3>
 <hr />
 
-<%= render "form.html", changeset: @changeset,
+<%= render "form.html", measurements: @measurements, changeset: @changeset,
                         action: site_path(@conn, :create) %>
 
 

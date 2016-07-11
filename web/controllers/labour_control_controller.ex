@@ -54,7 +54,7 @@ defmodule Novel.LabourControlController do
     changeset = LabourControl.changeset(labour_controls, labour_controls_params)
 
     case Repo.update(changeset) do
-      {:ok, labour_controls} ->
+      {:ok, _labour_controls} ->
         conn
         |> put_flash(:info, "Labour controls updated successfully.")
         |> redirect(to: site_sub_milestone_control_path(conn, :index, conn.assigns[:site_sub_milestone]))

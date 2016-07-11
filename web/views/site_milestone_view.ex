@@ -1,10 +1,9 @@
 defmodule Novel.SiteMilestoneView do
   use Novel.Web, :view
   use Number
-  import Ecto
+  
   import Ecto.Query
   alias Novel.Repo
-  alias Novel.Milestone
   alias Novel.SubMilestone
   
   def get_sub_milestone(site_sub_milestone) do
@@ -39,7 +38,7 @@ defmodule Novel.SiteMilestoneView do
   	query = from c in Novel.Control,
   		where: c.site_sub_milestone_id == ^ssm_id,
   		select: sum(c.total_cost)
-  	Repo.all(query) |> Enum.at 0 
+  	Repo.all(query) |> Enum.at(0) 
   end
   
   def change_style(estimated_budget, total_cost) do

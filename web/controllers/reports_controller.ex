@@ -3,6 +3,10 @@ defmodule Novel.ReportsController do
   import Ecto.Query
 
   def show(conn, %{"id" => id}) do
+    current_week = ""
+    week_number = ""
+    year = ""
+    
     site_milestone = Repo.get!(Novel.SiteMilestone, id)
       |> Repo.preload(:site)
       |> Repo.preload(:milestone)
@@ -19,7 +23,7 @@ defmodule Novel.ReportsController do
     else
       week_number = current_date |> Calendar.Date.week_number 
       current_week = week_number |> Calendar.Date.dates_for_week_number
-      year = current_date |> Calendar.Strftime.strftime! "%Y"  
+      year = current_date |> Calendar.Strftime.strftime!("%Y")   
     end
 
   	labours = Enum.reduce current_week, %{}, fn date, acc ->  

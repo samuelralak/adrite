@@ -27,13 +27,16 @@ $(document).ready(function () {
   data.labourData = labourData;
   data.materialData = materialData
 
-  renderBarChart(data, labels);
+  if (labels.length !== 0) {
+    renderBarChart(data, labels);  
+  }
 
-  $(".changeGraphType").on("change", function () {
+  $(".changeGraphType").on("change", function (event) {
     var type = $(this).val();
     $(".graphArea").empty();
     $(".graphArea").html("<canvas id='myChart' width='400' height='200'></canvas>");
     changeGraphType(type, data, labels)
+    event.preventDefault();
   });
 
   function changeGraphType(type, data, labels) {

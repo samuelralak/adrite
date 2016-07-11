@@ -4,7 +4,8 @@ defmodule Novel.SiteController do
 
   alias Novel.Site
   alias Novel.Milestone
-  alias Novel.SubMilestone
+  alias Novel.Measurement
+  alias Novel.SiteMeasurement
   
   plug Guardian.Plug.EnsureAuthenticated, handler: Novel.GuardianErrorHandler
 
@@ -16,8 +17,13 @@ defmodule Novel.SiteController do
   end
 
   def new(conn, _params) do
-    changeset = Site.changeset(%Site{})
-    render(conn, "new.html", changeset: changeset)
+    measurements = Repo.all(
+      from m in Measurement, select: { m.name, m.id })
+    site_measurements = Enum.reduce(0..4, [], fn(x, acc) -> 
+      List.insert_at(acc, x, %SiteMeasurement{}) 
+    end)
+    changeset = Site.changeset(%Site{ site_measurements: site_measurements })
+    render(conn, "new.html", changeset: changeset, measurements: measurements)
   end
 
   def create(conn, %{"site" => site_params}) do
@@ -25,7 +31,8 @@ defmodule Novel.SiteController do
 
     case Repo.insert(changeset) do
       {:ok, _site} ->
-      	create_milestone(_site)
+        site = _site
+      	create_milestone(site)
         conn
         |> put_flash(:info, "Site created successfully.")
         |> redirect(to: site_path(conn, :index))
@@ -97,7 +104,7 @@ defmodule Novel.SiteController do
   						sub_milestone_id: sub_milestone.id, estimated_budget: assign_submilestone_cost(
   							milestone, site_milestone)
   					}
-  					result = 
+  					_result = 
   						case Repo.get_by(Novel.SiteSubMilestone, 
   							%{ sub_milestone_id: sub_milestone.id, site_id: site.id }) do
   								nil -> %Novel.SiteSubMilestone{}
@@ -109,9 +116,6 @@ defmodule Novel.SiteController do
   			{:error, changeset} -> IO.inspect changeset
   		end
   	end
-  end
-  
-  defp update_milestone(site) do
   end
   
   defp milestone_measurement(milestone, site) do

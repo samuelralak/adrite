@@ -18,8 +18,8 @@
     </li>
     <li>
     	Week <%= @data.week_number %>. 
-    	<%= @data.current_date |> Calendar.Strftime.strftime! "%B"  %>, 
-    	<%= @data.current_date |> Calendar.Strftime.strftime! "%Y"  %>. </li>
+    	<%= @data.current_date |> Calendar.Strftime.strftime!("%B")   %>, 
+    	<%= @data.current_date |> Calendar.Strftime.strftime!("%Y")   %>. </li>
     <li class="next">
     	<%= link to: reports_path(@conn, :show, @data.site_milestone, year: @data.year, week_number: @data.week_number+1) do %>
     		Next <span aria-hidden="true">&rarr;</span>
@@ -33,7 +33,7 @@
 		<tr>
 			<th></th>
 			<%= for day <- @data.current_week do %>
-				<th class="dayOfWeek"><%= day |> Calendar.Strftime.strftime! "%a, %d"  %> </th>
+				<th class="dayOfWeek"><%= day |> Calendar.Strftime.strftime!("%a, %d")   %> </th>
 			<% end %>
 			<th>Total (Kshs)</th>
 		</tr>
@@ -42,14 +42,14 @@
 		<tr>
 			<td><strong>Materials (Kshs)</strong></td>
 			<%= for day <- @data.current_week do %>
-				<td class="materialData"><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.material, day) |> Enum.at 0) %></td>
+				<td class="materialData"><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.material, day) |> Enum.at(0)) %></td>
 			<% end %>
 			<td><%= Number.Delimit.number_to_delimited week_totals(@data.material, @data.labour).material_total %></td>
 		</tr>
 		<tr>
 			<td><strong>Labour (Kshs)</strong></td>
 			<%= for day <- @data.current_week do %>
-				<td class="labourData"><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.labour, day) |> Enum.at 0) %></td>
+				<td class="labourData"><%= Number.Delimit.number_to_delimited(Map.fetch!(@data.labour, day) |> Enum.at(0)) %></td>
 			<% end %>
 			<td><%= Number.Delimit.number_to_delimited week_totals(@data.material, @data.labour).labour_total %></td>
 		</tr>
@@ -84,7 +84,7 @@
 </div>
 
 <div class="row">
-	<div class="col-sm-12 graphArea">
+	<div class="col-sm-12 graphArea" style="min-height: 350px">
 		<canvas id="myChart" width="400" height="200"></canvas>
 	</div>
 </div>

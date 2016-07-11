@@ -54,7 +54,7 @@ defmodule Novel.MaterialControlController do
     changeset = MaterialControl.changeset(material_controls, material_controls_params)
 
     case Repo.update(changeset) do
-      {:ok, material_controls} ->
+      {:ok, _material_controls} ->
         conn
         |> put_flash(:info, "Material controls updated successfully.")
         |> redirect(to: site_sub_milestone_control_path(conn, :index, conn.assigns[:site_sub_milestone]))
