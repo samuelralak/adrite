@@ -2,16 +2,24 @@ defmodule Novel.ControlController do
   use Novel.Web, :controller
 
   alias Novel.Control
+  alias Novel.Site
 	
 	plug Guardian.Plug.EnsureAuthenticated, handler: Novel.GuardianErrorHandler
 	
   plug :scrub_params, "control" when action in [:create, :update]
-  plug :assign_site_sub_milestone
+  plug :assign_site_sub_milestone when not action in [:index]
 
-  def index(conn, _params) do
-    controls = Repo.all(assoc(conn.assigns[:site_sub_milestone], :controls))
-    IO.inspect controls
-    render(conn, "index.html", controls: controls)
+  def index(conn, params) do
+    IO.inspect params
+    site = Repo.get(Site, params["site_id"]) |> Repo.preload(:site_sub_milestones)
+    controls = Enum.reduce site.site_sub_milestones, [], fn ssm, acc ->
+      case Repo.get_by(Control, site_sub_milestone_id: ssm.id) do
+        nil -> acc
+        control -> List.insert_at(acc, Enum.count(acc) + 1, control) 
+      end
+    end
+
+    render(conn, "index.html", controls: controls, site: site)
   end
 
   def new(conn, _params) do
@@ -81,6 +89,13 @@ defmodule Novel.ControlController do
     			nil -> invalid_site_sub_milestone(conn)
     			site_sub_milestone -> assign(conn, :site_sub_milestone, site_sub_milestone)
       	end
+      %{"site_id" => site_id} -> 
+        site = Repo.get(Novel.Site, site_id)
+        |> Repo.preload(:site_sub_milestones)
+        case site do
+          nil -> invalid_site_sub_milestone(conn)
+          site -> assign(conn, :site, site)
+        end
     	_	-> invalid_site_sub_milestone(conn)
   	end
   end

@@ -25,13 +25,17 @@ defmodule Novel.Router do
     get "/login", SessionController, :new
     get "/user/edit", UserController, :edit
     get "/close/:id", SiteSubMilestoneController, :close
+    get "/site/:site_id/controls", SiteController, :controls
     
     put "/user", UserController, :update
     post "/sites/new", SiteController, :new
     post "/login", SessionController, :create
     delete "/logout", SessionController, :delete
     
-    resources "/sites", SiteController, except: [:index]
+    resources "/sites", SiteController, except: [:index] do
+      resources "/controls", ControlController, only: [:index]
+    end
+    
     resources "/milestones", MilestoneController
     resources "/sub_milestones", SubMilestoneController
     resources "/site_milestones", SiteMilestoneController

@@ -38,10 +38,35 @@
 		    			</form>
 				  		<ul class="nav navbar-nav navbar-right">
 				  			
-				  			<li style="">
-				    			<%= link to: user_path(@conn, :edit)  do %>
-				    				<span class="glyphicon glyphicon-user"></span> <strong><%= current_user(@conn).name %></strong>
+				  			<li class="dropdown">
+				    			<%= link to: "#", class: "dropdown-toggle", data: [toggle: "dropdown"], role: "button", 
+				    				aria: [haspopup: "true", expanded: "false"]  do %>
+				    				<strong><%= current_user(@conn).name %></strong> <span class="caret"></span> 
 				    			<% end %>
+				    			<ul class="dropdown-menu">
+				    				<li>
+				    					<%= link to: "#", data: [toggle: "modal", target: "#siteListModal"]  do %>
+				    						<span class="glyphicon glyphicon-briefcase"></span> Controls
+				    					<% end %>
+				    				</li>
+				    				<li role="separator" class="divider"></li>
+				    				<li>
+				    					<%= link to: user_path(@conn, :edit)  do %>
+				    						<span class="glyphicon glyphicon-circle-arrow-up"></span> Received
+				    					<% end %>
+				    				</li>
+				    				<li>
+				    					<%= link to: user_path(@conn, :edit)  do %>
+				    						<span class="glyphicon glyphicon-circle-arrow-down"></span> Payables
+				    					<% end %>
+				    				</li>
+				    				<li role="separator" class="divider"></li>
+				    				<li>
+				    					<%= link to: user_path(@conn, :edit)  do %>
+				    						<span class="glyphicon glyphicon-cog"></span> Settings
+				    					<% end %>
+				    				</li>
+				    			</ul>
 				    		</li>
 				    		
 				    		<li style="margin-top: 15px;">
@@ -60,6 +85,7 @@
 
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
+        <%= render Novel.SiteView, "site_list.html", conn: @conn, sites: Novel.Repo.all(Novel.Site)  %>
       </main>
 
     </div> <!-- /container -->

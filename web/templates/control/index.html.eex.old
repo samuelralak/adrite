@@ -1,0 +1,130 @@
+<div class="pull-right">
+	<%= if !@site_sub_milestone.is_completed do %>
+		<%= link "New Control", to: "#", data: [toggle: "modal", target: "#myModal"], class: "btn btn-primary btn-sm" %>
+	<% end %>
+	<%= link "Back", to: site_milestone_path(@conn, :show, @site_sub_milestone.site_milestone_id), class: "btn btn-default btn-sm" %>
+</div>
+
+<h3>
+	<strong>Listing controls for <%= @site_sub_milestone.sub_milestone.name %></strong><br />
+	<ul class="list-inline" style="margin-top: 5px;">
+		<li><small><strong>site: </strong><%= @site_sub_milestone.site.name %></small></li>
+		<li><small><strong>estimated budget: </strong>kes.<%= Number.Delimit.number_to_delimited @site_sub_milestone.estimated_budget %></small></li>
+	</ul>
+</h3>
+<hr />
+<%= for control <- @controls do %>
+	<div class="<%= if not is_nil(control.total_cost) && control.total_cost > @site_sub_milestone.estimated_budget, do: 'alert alert-danger' %>">
+		<h5><strong>Total Cost on Controls: </strong>kes.<%= Number.Delimit.number_to_delimited(control.total_cost) %><br />
+		</h5>
+		<%= if not is_nil(control.total_cost) && control.total_cost > @site_sub_milestone.estimated_budget do %>
+			<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds estimated budget by <strong>kes.<%= if not is_nil(control.total_cost), do: Number.Delimit.number_to_delimited (control.total_cost - @site_sub_milestone.estimated_budget)%></strong></small>
+		<% end %>
+		
+		<%= if not is_nil(control.total_cost) && control.total_cost >= (90/100 * @site_sub_milestone.estimated_budget) do %>
+			<div class="alert alert-warning">
+				<small><span class="glyphicon glyphicon-exclamation-sign"></span> Total cost exceeds 90% of estimated budget </small>
+			</div>
+		<% end %>	
+		
+		
+	</div>
+	<%= if control.material_controls do %>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="pull-right">
+					<strong>Total: </strong>kes.<%= Number.Delimit.number_to_delimited total_on_material(control) %>
+				</div>
+    		<h3 class="panel-title"><strong> Material Controls </strong></h3>
+  		</div>
+  		<div class="panel-body">
+  			<table class="table table-striped">
+					<thead>
+						<tr>
+				  		<th>Material</th>
+				  		<th>Cost</th>
+				  		<th>Amount</th>
+				  		<th>Total Cost</th>
+				  		<th>Date</th>
+				  		<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<%= for mc <- control.material_controls do %>
+							<tr>
+				  			<td><%= mc.material.name %></td>
+				  			<td>
+				  				<%= if is_nil(mc.specified_rate) do %>
+				  					<%= Float.to_string(mc.material.cost, [decimals: 2, compact: true]) %></td>
+				  				<%= else %>
+				  					<%= Float.to_string(mc.specified_rate, [decimals: 2, compact: true]) %></td>
+				  				<% end %>
+				  			</td>
+				  			<td><%= mc.amount %></td>
+				  			<td><%= Float.to_string(mc.total_cost, [decimals: 2, compact: true]) %></td>
+				  			<td><%= mc.date %></td>
+				  			<td class="text-right">
+				  				<%= if !@site_sub_milestone.is_completed do %>
+										<%= link "Edit", to: site_sub_milestone_material_control_path(@conn, :edit, @site_sub_milestone, mc), class: "btn btn-default btn-xs" %>
+										<%= link "Delete", to: site_sub_milestone_material_control_path(@conn, :delete, @site_sub_milestone, mc), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+									<% end %>
+				  			</td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+  		</div>
+		</div>
+	<% end %>
+	<%= if control.labour_controls do %>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="pull-right">
+					<strong>Total: </strong>kes.<%= Number.Delimit.number_to_delimited total_on_labour(control) %>
+				</div>
+    		<h3 class="panel-title"><strong> Labour Controls </strong></h3>
+  		</div>
+  		<div class="panel-body">
+  			<table class="table table-striped">
+					<thead>
+						<tr>
+				  		<th>Labour</th>
+				  		<th>Cost</th>
+				  		<th>No. of Workers</th>
+				  		<th>Total Cost</th>
+				  		<th>Date</th>
+				  		<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<%= for lc <- control.labour_controls do %>
+							<tr>
+				  			<td><%= lc.labour.name %></td>
+				  			<td>
+				  				<%= if is_nil(lc.specified_rate) do %>
+				  					<%= Float.to_string(lc.labour.cost, [decimals: 2, compact: true]) %></td>
+				  				<%= else %>
+				  					<%= Float.to_string(lc.specified_rate, [decimals: 2, compact: true]) %></td>
+				  				<% end %>
+				  			<td><%= lc.no_of_workers %></td>
+				  			<td><%= Float.to_string(lc.total_cost, [decimals: 2, compact: true]) %></td>
+				  			<td><%= lc.date %></td>
+				  			<td class="text-right">
+				  				<%= if !@site_sub_milestone.is_completed do %>
+										<%= link "Edit", to: site_sub_milestone_labour_control_path(@conn, :edit, @site_sub_milestone, lc), class: "btn btn-default btn-xs" %>
+										<%= link "Delete", to: site_sub_milestone_labour_control_path(@conn, :delete, @site_sub_milestone, lc), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+									<% end %>
+				  			</td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+  		</div>
+		</div>
+	<% end %>
+<% end %>
+
+
+<%#= link "New control", to: site_sub_milestone_control_path(@conn, :new, @site_sub_milestone) %>
+
+<%= render "control_modal.html", conn: @conn, site_sub_milestone: @site_sub_milestone %>

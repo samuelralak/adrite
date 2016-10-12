@@ -1,5 +1,8 @@
 defmodule Novel.SiteSubMilestone do
   use Novel.Web, :model
+  use Ecto.Model
+  
+  after_load :preload_associations
   @derive {Poison.Encoder, only: [:start_date, :end_date, :notes, :cost, :is_completed]}
 
   schema "site_sub_milestones" do
@@ -32,5 +35,9 @@ defmodule Novel.SiteSubMilestone do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def preload_associations(site_sub_milestone) do
+    site_sub_milestone |> Novel.Repo.preload([:sub_milestone])
   end
 end
