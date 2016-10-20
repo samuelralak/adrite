@@ -6,21 +6,21 @@ defmodule Novel.SiteController do
   alias Novel.Milestone
   alias Novel.Measurement
   alias Novel.SiteMeasurement
-  
+
   plug Guardian.Plug.EnsureAuthenticated, handler: Novel.GuardianErrorHandler
 
   plug :scrub_params, "site" when action in [:create, :update]
 
   def index(conn, _params) do
-    sites = Site |> order_by(desc: :inserted_at) |> Repo.all 
+    sites = Site |> order_by(desc: :inserted_at) |> Repo.all
     render(conn, "index.html", sites: sites)
   end
 
   def new(conn, _params) do
     measurements = Repo.all(
       from m in Measurement, select: { m.name, m.id })
-    site_measurements = Enum.reduce(0..4, [], fn(x, acc) -> 
-      List.insert_at(acc, x, %SiteMeasurement{}) 
+    site_measurements = Enum.reduce(0..4, [], fn(x, acc) ->
+      List.insert_at(acc, x, %SiteMeasurement{})
     end)
     changeset = Site.changeset(%Site{ site_measurements: site_measurements })
     render(conn, "new.html", changeset: changeset, measurements: measurements)
@@ -47,7 +47,7 @@ defmodule Novel.SiteController do
   end
 
   def edit(conn, %{"id" => id}) do
-    site = Repo.get!(Site, id)
+    site = Repo.get!(Site, id) |> Repo.preload(:site_measurements)
     changeset = Site.changeset(site)
     render(conn, "edit.html", site: site, changeset: changeset)
   end
@@ -78,24 +78,24 @@ defmodule Novel.SiteController do
     |> put_flash(:info, "Site deleted successfully.")
     |> redirect(to: site_path(conn, :index))
   end
-  
+
   defp create_milestone(site) do
   	milestones = Repo.all(Milestone)
   	for milestone <- milestones do
-  		changes = %{ milestone_id: milestone.id, site_id: site.id, 
+  		changes = %{ milestone_id: milestone.id, site_id: site.id,
   			square_meters: milestone_measurement(milestone, site),
   			estimated_budget: assign_milestone_cost(milestone, site)
   		}
-  		result = 
-				case Repo.get_by(Novel.SiteMilestone, 
+  		result =
+				case Repo.get_by(Novel.SiteMilestone,
 					%{ milestone_id: milestone.id, site_id: site.id }) do
 						nil -> %Novel.SiteMilestone{}
 						site_milestone -> site_milestone
 				end
 				|> Novel.SiteMilestone.changeset(changes)
 				|> Repo.insert_or_update
-  		
-  		
+
+
   		case result do
   			{:ok, site_milestone} ->
   				sub_milestones = Repo.all(assoc(milestone, :sub_milestones))
@@ -104,24 +104,24 @@ defmodule Novel.SiteController do
   						sub_milestone_id: sub_milestone.id, estimated_budget: assign_submilestone_cost(
   							milestone, site_milestone)
   					}
-  					_result = 
-  						case Repo.get_by(Novel.SiteSubMilestone, 
+  					_result =
+  						case Repo.get_by(Novel.SiteSubMilestone,
   							%{ sub_milestone_id: sub_milestone.id, site_id: site.id }) do
   								nil -> %Novel.SiteSubMilestone{}
   								site_sub_milestone -> site_sub_milestone
   						end
   						|> Novel.SiteSubMilestone.changeset(changes)
   						|> Repo.insert_or_update
-  				end 
+  				end
   			{:error, changeset} -> IO.inspect changeset
   		end
   	end
   end
-  
+
   defp milestone_measurement(milestone, site) do
   	name = milestone.name
   	measurement = Decimal.new(0)
-  	
+
   	case name do
   		"Surface Preparation" ->
   			measurement = Decimal.add(site.internal_walls_measurement, site.woodwork_measurement)
@@ -142,17 +142,17 @@ defmodule Novel.SiteController do
   			measurement
   		_ ->
   			measurement
-  	end	
+  	end
   end
-  
+
   defp assign_milestone_cost(milestone, site) do
   	cost = site.estimated_budget
   	name = milestone.name
-  	
+
   	case name do
   		"Surface Preparation" ->
   			total_cost = 0.1 * cost
-  			total_cost 
+  			total_cost
   		"Filler Work" ->
   			total_cost = 0.35 * cost
   			total_cost
@@ -168,13 +168,12 @@ defmodule Novel.SiteController do
   		_ ->
   			total_cost = 0.1 * cost
   			total_cost
-  	end	
+  	end
   end
-  
+
   defp assign_submilestone_cost(milestone, site_milestone) do
   	count = Enum.count Repo.all(assoc(milestone, :sub_milestones))
   	cost = site_milestone.estimated_budget/count
   	cost
   end
 end
-
