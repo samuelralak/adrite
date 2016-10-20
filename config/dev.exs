@@ -35,8 +35,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :novel, Novel.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "sam",
-  password: "samiralak",
-  database: "novel_dev",
+  username: "samuelralak",
+  database: "adrite_dev",
   hostname: "localhost",
   pool_size: 10
